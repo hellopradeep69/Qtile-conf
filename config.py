@@ -1,5 +1,6 @@
 import os
 
+
 import libqtile.resources
 import subprocess
 
@@ -8,13 +9,6 @@ from libqtile import bar, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-
-
-@hook.subscribe.startup_once
-def autostart():
-    home = os.path.expanduser("~/.config/qtile/autostart.sh")
-    subprocess.call(home)
-
 
 mod = "mod4"
 mod_alt = "mod1"  # Alt
@@ -79,6 +73,7 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     # Keybinds | hello pradeep
+    Key([mod], "p", lazy.hide_show_bar("top"), desc="Toggle top bar"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod], "Return", lazy.spawn("wezterm"), desc="Launch terminal"),
     Key([mod], "b", lazy.spawn("zen"), desc="Launch browser"),
@@ -166,8 +161,7 @@ for vt in range(1, 8):
 # My Groups
 groups = [
     Group("1"),
-    Group("2", matches=[Match(wm_class="zen"), Match(wm_class="Navigator")]),
-    # Group("2", matches=[Match(wm_class="zen")], spawn="zen"),
+    Group("2", matches=[Match(wm_class="zen")], spawn="zen"),
     Group("3"),
     Group("4"),
     Group("5"),
@@ -175,7 +169,7 @@ groups = [
     Group("7"),
     Group("8"),
     Group("9"),
-    Group("0"),
+    Group("0", matches=[Match(wm_class="Telegram")]),
 ]
 
 for i in groups:
@@ -281,6 +275,9 @@ screens = [
                 # widget.QuickExit(),
             ],
             24,
+            opacity=0.7,
+            # margin=[5, 5, 0, 5],
+            margin=[3, 3, 0, 3],
             # border_width=[2, 2, 2, 2],  # Draw top and bottom borders
             # border_color=[ "ff00ff", "000000", "ff00ff", "000000", ],  # Borders are magenta
         ),
@@ -292,7 +289,7 @@ screens = [
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate=60,
+        x11_drag_polling_rate=60,
     ),
 ]
 
@@ -320,6 +317,7 @@ floating_layout = layout.Floating(
     border_focus="#979186",
     border_normal="#000000",
     border_width=1,
+    # Rules
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
@@ -358,3 +356,25 @@ wl_xcursor_size = 24
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
+
+# Hook | Autostart
+@hook.subscribe.startup_once
+def autostart():
+    script = os.path.expanduser("~/.config/qtile/autostart.sh")
+    subprocess.run([script])
+
+
+# Rule opener for app
+@hook.subscribe.client_new
+def move_to_group(window):
+    wm_class = window.window.get_wm_class()
+    if wm_class and "Telegram" in wm_class:
+        window.togroup("0")
+        window.qtile.groups_map["0"].cmd_toscreen()
+    elif wm_class and "org.wezfurlong.wezterm" in wm_class:
+        window.togroup("1")
+        window.qtile.groups_map["1"].cmd_toscreen()
+    elif wm_class and "vlc" in wm_class:
+        window.togroup("3")
+        window.qtile.groups_map["3"].cmd_toscreen()

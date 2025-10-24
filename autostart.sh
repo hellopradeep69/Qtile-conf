@@ -20,3 +20,7 @@ picom &
 
 # ~/.config/polybar/launch.sh --colorblocks &
 # ~/.config/polybar/launch.sh --shades &
+
+# Open the apps
+# zen &
+# wezterm start --always-new-process &

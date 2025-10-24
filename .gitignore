@@ -1,0 +1,12 @@
+
+# Qtile cache and compiled files
+__pycache__/
+*.pyc
+
+# Backup or temp files
+*.swp
+*.swo
+*~
+
+# Logs or runtime files (if any)
+qtile.log
