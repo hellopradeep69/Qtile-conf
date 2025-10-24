@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Power Menu
+Comment=Shutdown, Reboot, Suspend, Logout, and Lock
+Exec=/home/hellopradeep/.local/bin/simple-powermenu
+Icon=system-shutdown
+Terminal=false
+Type=Application
+Categories=System;
+

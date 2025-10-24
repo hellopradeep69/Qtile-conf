@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=Zen Browser
+Comment=Privacy-focused Firefox-based browser
+Exec=/opt/zen/zen %U
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
