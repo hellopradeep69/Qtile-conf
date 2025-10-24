@@ -1,12 +1,17 @@
 ## Qtile
 
+![Qtile](Assets/asset.png)
+
 - simple qtile config that just work no beautiful stuff and no pretty animation .
 - I like it
+- This configuration is built for **Linux Mint**. Other distros may require adjustments.
 
 ### DEPENDENCIES
 
-- cmake picom rofi wezterm alacritty fish neovim btop lxappearance
-  feh dunst git curl wget fzf tmux bat unzip qtile
+```bash
+cmake picom rofi wezterm alacritty fish neovim btop lxappearance
+ feh dunst git curl wget fzf tmux bat unzip qtile
+```
 
 ### Installation
 
@@ -27,8 +32,12 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-- If any issue , create/report an issue
+- If any issue , create/report an
   [Issue](https://github.com/hellopradeep69/Qtile-conf/issues)
+
+#### More screenshot
+
+![Qtile-tile](Assets/asset2.png)
 
 #### More config
 
