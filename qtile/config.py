@@ -168,8 +168,8 @@ for vt in range(1, 8):
 groups = [
     Group("1"),
     Group("2", matches=[Match(wm_class="zen")]),
-    Group("3", matches=[Match(wm_class="nemo")]),
-    Group("4"),
+    Group("3", matches=[Match(wm_class="dev.zed.Zed")]),
+    Group("4", matches=[Match(wm_class="nemo"), Match(wm_class="vlc")]),
     Group("5"),
     Group("6"),
     Group("7"),
@@ -220,7 +220,7 @@ layout_value = {
 layout_value1 = {
     "border_focus": "#d9d0c0",  # Focused window border color
     "border_normal": "#010000",  # Unfocused window border color
-    "border_on_single": False,  # Show border even for single window
+    "border_on_single": True,  # Show border even for single window
     "border_width": 1,  # Border thickness
 }
 
@@ -247,6 +247,8 @@ layouts = [
     # layout.VerticalTile(**layout_value1), # absolute stupid
     # layout.Max(),  # no
     # layout.Stack(num_stacks=2, **layout_value1),  # not best
+    # layout.Floating(),  # nope no floating
+    layout.ScreenSplit(),  # jsut split in half
 ]
 
 widget_defaults = dict(
@@ -280,6 +282,9 @@ screens = [
                     fmt="| Vol: {}",
                 ),
                 widget.Battery(
+                    charging_foreground="#B2B2B2",
+                    low_foreground="#E50000",
+                    low_percentage=0.35,
                     charge_char="CHA",
                     discharge_char="BAT",
                     format="| {char} {percent:2.0%}",
@@ -405,9 +410,10 @@ def move_to_group(window):
     wm_class = window.window.get_wm_class()
     if wm_class and "Telegram" in wm_class:
         window.togroup("0")
+        # window.qtile.groups_map["0"].cmd_toscreen()
     elif wm_class and "vlc" in wm_class:
-        window.togroup("3")
-        window.qtile.groups_map["3"].cmd_toscreen()
+        window.togroup("4")
+        # window.qtile.groups_map["4"].cmd_toscreen()
     elif wm_class and "nemo" in wm_class:
-        window.togroup("3")
-        window.qtile.groups_map["3"].cmd_toscreen()
+        window.togroup("4")
+        # window.qtile.groups_map["4"].cmd_toscreen()
