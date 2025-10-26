@@ -19,11 +19,11 @@ if status is-interactive
     end
 
     # run command tmenu when not in tmux
-    if not set -q TMUX
-        if type -q tmenu
-            ~/.local/bin/topen.sh d home
-        end
-    end
+    # if not set -q TMUX
+    #     if type -q tmenu
+    #         ~/.local/bin/topen.sh d home
+    #     end
+    # end
 
     # Initialize Starship prompt
     starship init fish | source

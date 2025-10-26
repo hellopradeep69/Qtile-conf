@@ -18,8 +18,8 @@ picom &
 ~/.local/bin/keybind.sh &
 ~/.local/bin/battery-notify2.sh &
 
-# ~/.config/polybar/launch.sh --colorblocks &
-# ~/.config/polybar/launch.sh --shades &
+# polybar
+# $HOME/.config/polybar/launch.sh &
 
 # Open the apps
 # zen &

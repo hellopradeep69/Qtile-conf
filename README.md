@@ -39,6 +39,8 @@ chmod +x setup.sh
 
 ![Qtile-tile](Assets/asset2.png)
 
+![Hello World](Assets/asset3.png)
+
 #### More config
 
 - [ Bspwm config ](https://github.com/hellopradeep69/bspwm-config.git)

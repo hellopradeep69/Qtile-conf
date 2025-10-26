@@ -21,19 +21,19 @@
   text-alt:   #aaaaaa;
   fg:         #ffffff;
   bg:         #000000;
-  bg2:        #222222cc;   /* for selected items */
+  bg2:        #81807F;   /* for selected items */
   fg2:        #ffffff80;   /* placeholder text */
   spacing: 0;
   background-color: transparent;
 
-  font: "Knack Nerd Font 16";
+    font: "JetBrainsMono Nerd Font 15";
   text-color: @text;
 }
 
 window {
   transparency: "real";
   fullscreen: true;
-  background-color: #000000dd;
+  background-color: #0F0F0F;
 }
 
 mainbox {

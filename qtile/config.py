@@ -11,7 +11,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 mod = "mod4"
-mod_alt = "mod1"  # Alt
+alt = "mod1"  # Alt
 terminal = guess_terminal()
 
 keys = [
@@ -73,12 +73,18 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     # My Keybinds | hello pradeep
+    Key(
+        [alt],
+        "space",
+        lazy.spawn("/home/hellopradeep/.local/bin/internetq.sh"),
+        desc="Internet qtile",
+    ),
     Key([mod], "p", lazy.hide_show_bar("top"), desc="Toggle top bar"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod], "Return", lazy.spawn("wezterm"), desc="Launch terminal"),
     Key([mod], "b", lazy.spawn("zen"), desc="Launch browser"),
-    Key([mod_alt], "h", lazy.screen.prev_group(), desc="Switch to previous workspace"),
-    Key([mod_alt], "l", lazy.screen.next_group(), desc="Switch to next workspace"),
+    Key([alt], "h", lazy.screen.prev_group(), desc="Switch to previous workspace"),
+    Key([alt], "l", lazy.screen.next_group(), desc="Switch to next workspace"),
     Key(
         ["control"],
         "space",
@@ -123,7 +129,7 @@ keys = [
         desc="Mute/unmute",
     ),
     Key(
-        [mod_alt],
+        [alt],
         "Return",
         lazy.window.toggle_fullscreen(),
         desc="Toggle fullscreen",
@@ -161,15 +167,22 @@ for vt in range(1, 8):
 # My Groups
 groups = [
     Group("1"),
-    Group("2", matches=[Match(wm_class="zen")], spawn="zen"),
-    Group("3"),
+    Group("2", matches=[Match(wm_class="zen")]),
+    Group("3", matches=[Match(wm_class="nemo")]),
     Group("4"),
     Group("5"),
     Group("6"),
     Group("7"),
     Group("8"),
     Group("9"),
-    Group("0", matches=[Match(wm_class="Telegram")]),
+    Group(
+        "0",
+        layout="treetab",
+        matches=[
+            Match(wm_class="Telegram"),
+            Match(wm_class="cinnamon-settings network"),
+        ],
+    ),
 ]
 
 for i in groups:
@@ -207,31 +220,40 @@ layout_value = {
 layout_value1 = {
     "border_focus": "#d9d0c0",  # Focused window border color
     "border_normal": "#010000",  # Unfocused window border color
-    "border_on_single": True,  # Show border even for single window
+    "border_on_single": False,  # Show border even for single window
     "border_width": 1,  # Border thickness
 }
 
+tree_value = {
+    "active_bg": "#2B2826",
+    "inactive_bg": "#000000",
+    "active_fg": "#ffffff",
+    "font": "Terminess Nerd Font Mono",
+    "panel_width": 150,
+}
+
 layouts = [
-    layout.Bsp(**layout_value),
-    layout.Columns(**layout_value),
-    layout.TreeTab(**layout_value1),
+    layout.Bsp(**layout_value1),  # bspwm alike
+    layout.Plasma(**layout_value1),
+    layout.RatioTile(**layout_value1),  # mmm i kinda like it
+    layout.TreeTab(**tree_value),
     # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2, **layout_value1),
-    # layout.Max(),
-    # layout.Matrix(**layout_value1),
-    # layout.MonadTall(**layout_value1),
-    # layout.MonadWide(**layout_value1),
-    # layout.RatioTile(**layout_value1),
-    # layout.Tile(**layout_value1),
-    # layout.VerticalTile(**layout_value1),
-    # layout.Zoomy(**layout_value1),
+    # layout.Columns(**layout_value),
+    # layout.Zoomy(**layout_value1), # tree but with lil preview
+    # layout.Tile(**layout_value1),  # it push focus to side
+    # layout.MonadTall(**layout_value1),  # arrange in same format even tho focus on win
+    # layout.MonadWide(**layout_value1),  # same as tall but wide
+    # layout.Matrix(**layout_value1),  # good for show off
+    # layout.VerticalTile(**layout_value1), # absolute stupid
+    # layout.Max(),  # no
+    # layout.Stack(num_stacks=2, **layout_value1),  # not best
 ]
 
 widget_defaults = dict(
     # font="Iosevka Nerd Font",
     font="Terminess Nerd Font Mono",
     # font="JetBrainsMono Nerd Font",
-    fontsize=13,
+    fontsize=15,
     padding=7,
 )
 extension_defaults = widget_defaults.copy()
@@ -244,20 +266,22 @@ screens = [
                 widget.CurrentLayout(),
                 widget.GroupBox(
                     highlight_method="line",
+                    highlight_color=["#373B41", "#282828"],
+                    this_current_screen_border="#d9d0c0",
                 ),
                 widget.Prompt(),
                 widget.WindowName(
                     format="{name}",
                     max_chars=40,
+                    empty_group_string=" hellopradeep",
                 ),
-                # widget.Wallpaper(directory="~/Pictures/Wallpapers/"),
                 widget.Memory(format="{MemUsed: .0f}{mm}"),
                 widget.PulseVolume(
                     fmt="| Vol: {}",
                 ),
                 widget.Battery(
-                    charge_char="@",
-                    discharge_char="-",
+                    charge_char="CHA",
+                    discharge_char="BAT",
                     format="| {char} {percent:2.0%}",
                     charge_controller=lambda: (0, 80),
                     update_interval=15,
@@ -265,6 +289,7 @@ screens = [
                 widget.Wlan(
                     format="| {essid}",
                     interface="wlp2s0",
+                    disconnected_message="| Disconnected",
                 ),
                 widget.Clock(format="| %m-%d %a | %I:%M %p"),
                 widget.Backlight(
@@ -272,18 +297,27 @@ screens = [
                     step=5,
                     format="| {percent:2.0%}   ",
                 ),
-                # widget.QuickExit(),
             ],
-            24,
-            opacity=0.7,
+            30,
+            opacity=0.9,
+            background="#282A2E",
+            # background="#393939",
             # margin=[5, 5, 0, 5],
             margin=[3, 3, 0, 3],
-            # border_width=[2, 2, 2, 2],  # Draw top and bottom borders
-            # border_color=[ "ff00ff", "000000", "ff00ff", "000000", ],  # Borders are magenta
+            name="hello_bar",
         ),
-        # background="#000000",
-        background="#00000040",
-        # wallpaper=logo,
+        # left=bar.Bar(
+        #     [
+        #         widget.Spacer(background="#393939"),
+        #         widget.VerticalClock(fontsize=20),
+        #         widget.Spacer(background="#393939"),
+        #     ],
+        #     30,  # width
+        #     opacity=0.5,
+        #     background="#393939",
+        #     margin=[3, 3, 3, 3],
+        # ),
+        background="#000000",
         wallpaper="~/Pictures/Wallpapers/tree.png",
         wallpaper_mode="stretch",
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
@@ -332,7 +366,7 @@ floating_layout = layout.Floating(
     ],
 )
 auto_fullscreen = True
-focus_on_window_activation = "smart"
+focus_on_window_activation = "focus"
 focus_previous_on_window_remove = False
 reconfigure_screens = True
 
@@ -371,10 +405,9 @@ def move_to_group(window):
     wm_class = window.window.get_wm_class()
     if wm_class and "Telegram" in wm_class:
         window.togroup("0")
-        window.qtile.groups_map["0"].cmd_toscreen()
-    elif wm_class and "org.wezfurlong.wezterm" in wm_class:
-        window.togroup("1")
-        window.qtile.groups_map["1"].cmd_toscreen()
     elif wm_class and "vlc" in wm_class:
+        window.togroup("3")
+        window.qtile.groups_map["3"].cmd_toscreen()
+    elif wm_class and "nemo" in wm_class:
         window.togroup("3")
         window.qtile.groups_map["3"].cmd_toscreen()

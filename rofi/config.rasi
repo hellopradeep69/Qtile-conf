@@ -174,3 +174,10 @@ configuration {
 // black and white
 // @theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
 // @theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
+// @theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
+// @theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
+//@theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
+//@theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
+//@theme "/home/hellopradeep/.config/rofi/themes/spot2.rasi"
+//@theme "/home/hellopradeep/.config/rofi/themes/spot.rasi"
+@theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
