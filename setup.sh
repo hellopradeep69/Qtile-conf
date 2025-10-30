@@ -38,6 +38,7 @@ Copy_it() {
     cp -r "$CONFIG_REPO/fastfetch/." "$CONFIG_DIR/fastfetch/"
     cp "$CONFIG_REPO/starship.toml" "$CONFIG_DIR/starship.toml"
     cp "$CONFIG_REPO/tmux.conf" "$HOME/.tmux.conf"
+    cp "$CONFIG_REPO/.zshrc" "$HOME/.zshrc"
     cp "$CONFIG_REPO/wezterm.lua" "$HOME/.wezterm.lua"
     cp -r "$CONFIG_REPO/scripts/." "$LOCAL_BIN/"
     cp -r "$CONFIG_REPO/Wallpaper/." "$HOME/Pictures/Wallpapers/"

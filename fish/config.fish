@@ -43,6 +43,9 @@ if status is-interactive
     alias lvim="NVIM_APPNAME=Lazyvimed nvim"
 
     alias nvchad="NVIM_APPNAME=nvchad nvim"
+
+    alias ls='ls --color=auto --classify=never'
+
 end
 
 # eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

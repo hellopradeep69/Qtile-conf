@@ -228,8 +228,8 @@ tree_value = {
     "active_bg": "#2B2826",
     "inactive_bg": "#000000",
     "active_fg": "#ffffff",
-    "font": "Terminess Nerd Font Mono",
-    "panel_width": 150,
+    "font": "JetBrainsMono Nerd Font Bold",
+    "panel_width": 100,
 }
 
 layouts = [
@@ -248,7 +248,7 @@ layouts = [
     # layout.Max(),  # no
     # layout.Stack(num_stacks=2, **layout_value1),  # not best
     # layout.Floating(),  # nope no floating
-    layout.ScreenSplit(),  # jsut split in half
+    # layout.ScreenSplit(),  # jsut split in half
 ]
 
 widget_defaults = dict(
@@ -267,6 +267,7 @@ screens = [
             [
                 widget.CurrentLayout(),
                 widget.GroupBox(
+                    disable_drag=True,
                     highlight_method="line",
                     highlight_color=["#373B41", "#282828"],
                     this_current_screen_border="#d9d0c0",

@@ -39,43 +39,6 @@ return {
 	--   bottom = 2,
 	-- },
 
-	-- Custom red-themed tab bar colors
-	colors = {
-		tab_bar = {
-			background = "#1a0d0d", -- Background behind all tabs
-
-			active_tab = {
-				bg_color = "#cc4444", -- Bright red for the active tab
-				fg_color = "#1a0d0d", -- Dark text for contrast
-				intensity = "Bold",
-				underline = "None",
-				italic = false,
-			},
-
-			inactive_tab = {
-				bg_color = "#3b1f1f", -- Dull red-brown for inactive tabs
-				fg_color = "#f0c0c0", -- Soft pink text
-			},
-
-			inactive_tab_hover = {
-				bg_color = "#5a2a2a", -- Slightly brighter on hover
-				fg_color = "#ffffff",
-				italic = true,
-			},
-
-			new_tab = {
-				bg_color = "#1a0d0d",
-				fg_color = "#ff6b6b", -- Reddish-pink icon for new tab
-			},
-
-			new_tab_hover = {
-				bg_color = "#3b1f1f",
-				fg_color = "#ff9999",
-				italic = true,
-			},
-		},
-	},
-
 	-- Dim inactive panes (useful in split layouts)
 	inactive_pane_hsb = {
 		saturation = 0.9,
@@ -110,5 +73,14 @@ return {
 				mods = "CTRL",
 			}),
 		},
+		-- ctrl J to send ctrl c
+		-- {
+		-- 	key = "j",
+		-- 	mods = "CTRL",
+		-- 	action = wezterm.action.SendKey({
+		-- 		key = "c",
+		-- 		mods = "CTRL",
+		-- 	}),
+		-- },
 	},
 }

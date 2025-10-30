@@ -1,11 +1,28 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
+format = """
+$character\
+$directory\
+$git_branch\
+$git_status"""
+
 # inserts a blank line between shell prompts
 add_newline = true
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'
 success_symbol = '[❯](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+
+[directory]
+truncation_length = 1
+read_only = ' 🔒'
+
+[git_branch]
+symbol = 'git'
+format = '[$symbol:\([$branch](bold red)\)](bold blue) '
+
+[git_status]
+style = "bold yellow"
 
 # Disable the package module, hiding it from the prompt completely
 [package]
@@ -32,14 +49,3 @@ disabled = true
 [rust]
 disabled = true
 
-# [username]
-# show_always = true
-# style_user = "bg:surface0 fg:text"
-# style_root = "bg:surface0 fg:text"
-# format = '[ $user ]($style)'
-#
-# [time]
-# disabled = false
-# time_format = "%R"
-# style = "bg:peach"
-# format = '[[  $time ](fg:mantle bg:purple)]($style)'
