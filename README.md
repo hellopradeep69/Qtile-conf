@@ -13,6 +13,12 @@ cmake picom rofi wezterm alacritty fish neovim btop lxappearance
  feh dunst git curl wget fzf tmux bat unzip qtile
 ```
 
+---
+
+### Keybinds
+
+---
+
 ### Installation
 
 - install Qtile using their website
