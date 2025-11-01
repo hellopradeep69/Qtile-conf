@@ -17,6 +17,8 @@ cmake picom rofi wezterm alacritty fish neovim btop lxappearance
 
 ### Keybinds
 
+- For Qtile keybinds , Refer the [ Document ](https://github.com/hellopradeep69/Qtile-conf/tree/main/Keybind#readme)
+
 ---
 
 ### Installation

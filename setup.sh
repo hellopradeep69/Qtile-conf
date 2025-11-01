@@ -8,6 +8,16 @@
 CONFIG_REPO="$HOME/Qtile_conf"
 CONFIG_DIR="$HOME/.config"
 LOCAL_BIN="$HOME/.local/bin"
+BACKUP_DIR="$HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
+
+# color
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+RESET='\033[0m' # Reset color
 
 PACKAGES=(
     cmake picom rofi wezterm alacritty fish neovim btop lxappearance
@@ -23,6 +33,86 @@ mkdir -p "$LOCAL_BIN"
 # -------------------------
 # Functions
 # -------------------------
+
+Start_menu() {
+    clear
+    echo -e "${BLUE}"
+    echo "     ┓       "
+    echo "┓┏┏┏┓┃┏┏┓┏┳┓┏┓  ╋┏┓"
+    echo "┗┻┛┗ ┗┗┗┛┛┗┗┗   ┗┗┛"
+    echo -e "${YELLOW}"
+    echo "▓█████▄  ▒█████  ▄▄▄█████▓ ▄████▄   ▒█████   ███▄    █   █████▒"
+    echo "▒██▀ ██▌▒██▒  ██▒▓  ██▒ ▓▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █ ▓██   ▒ "
+    echo "░██   █▌▒██░  ██▒▒ ▓██░ ▒░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒▒████ ░ "
+    echo "░▓█▄   ▌▒██   ██░░ ▓██▓ ░ ▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒░▓█▒  ░ "
+    echo "░▒████▓ ░ ████▓▒░  ▒██▒ ░ ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░░▒█░    "
+    echo "▒▒▓  ▒ ░ ▒░▒░▒░   ▒ ░░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒  ▒ ░    "
+    echo "░ ▒  ▒   ░ ▒ ▒░     ░      ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░ ░      "
+    echo "░ ░  ░ ░ ░ ░ ▒    ░      ░        ░ ░ ░ ▒     ░   ░ ░  ░ ░    "
+    echo "░        ░ ░           ░ ░          ░ ░           ░         "
+    echo "░                        ░                                    "
+    echo -e "${RESET}"
+
+    echo ""
+    echo -e "${CYAN} Greeting's ${GREEN}$(whoami)${RESET}"
+    echo ""
+    echo -e "${YELLOW} Disclaimer:${RESET}"
+    echo "  This setup script will:"
+    echo "   • Install required packages and tools."
+    echo "   • Copy your Qtile and related configuration files."
+    echo "   • Automatically back up any existing configuration files"
+    echo "     before replacing them with new ones."
+    echo ""
+    echo "  Backups are stored in:"
+    echo "     ~/config_backups_<timestamp>/"
+    echo ""
+    echo "  Use this script at your own discretion. It may overwrite existing configurations."
+    echo -e "${RED} ---------------------------------------------------------${RESET}"
+    echo ""
+
+    read -p "Do you want to continue (Y/n): " Value
+    if [[ "$Value" = "y" || "$Value" = "Y" ]]; then
+        echo -e "${GREEN}Running the script...${RESET}"
+        sleep 1
+        echo -ne "${CYAN}Loading"
+        for i in {1..5}; do
+            echo -ne "."
+            sleep 0.5
+        done
+        echo -e "${RESET}"
+    else
+        echo -e "${YELLOW}Doesn’t matter... continuing anyway ${RESET}"
+        sleep 2
+        echo -ne "${CYAN}Loading"
+        for i in {1..5}; do
+            echo -ne "."
+            sleep 0.5
+        done
+        echo ""
+        echo -e "${RED}Just kidding!${RESET}"
+        echo -e "${RED}Aborting.${RESET}"
+        exit 0
+    fi
+}
+
+# 🧩 Backup existing configs
+Backup_it() {
+    echo "🔄 Backing up existing configuration files..."
+    mkdir -p "$BACKUP_DIR"
+
+    for dir in qtile picom dunst fish rofi zathura fastfetch; do
+        if [ -d "$CONFIG_DIR/$dir" ]; then
+            cp -r "$CONFIG_DIR/$dir" "$BACKUP_DIR/"
+        fi
+    done
+
+    [ -f "$CONFIG_DIR/starship.toml" ] && cp "$CONFIG_DIR/starship.toml" "$BACKUP_DIR/"
+    [ -f "$HOME/.tmux.conf" ] && cp "$HOME/.tmux.conf" "$BACKUP_DIR/"
+    [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$BACKUP_DIR/"
+    [ -f "$HOME/.wezterm.lua" ] && cp "$HOME/.wezterm.lua" "$BACKUP_DIR/"
+
+    echo "✅ Backup complete. Saved in: $BACKUP_DIR"
+}
 
 Copy_it() {
     mkdir -p "$CONFIG_DIR/qtile" "$CONFIG_DIR/picom" "$CONFIG_DIR/dunst" \
@@ -140,6 +230,14 @@ Install_zen() {
 # -------------------------
 # 3️⃣ Copy configuration files
 # -------------------------
+Start_menu
+echo ""
+echo -e "${GREEN}Running...${RESET}"
+
+echo " "
+echo "creating a backup"
+Backup_it
+
 echo "Copying configs..."
 Copy_it
 
@@ -195,6 +293,10 @@ echo "Ensure autostart.sh is executable..."
 if [ -f "$CONFIG_DIR/qtile/autostart.sh" ]; then
     chmod +x "$CONFIG_DIR/qtile/autostart.sh"
 fi
+
+# cleaner
+echo "Cleaning up temporary files..."
+rm -f JetBrainsMono.zip Terminus.zip zen.linux-x86_64.tar.xz
 
 # -------------------------
 # 7️⃣ Done
