@@ -30,7 +30,8 @@ java)
     CMD=("sh" -c "javac \"$FILE\" && java \"$CLASSNAME\"")
     ;;
 c)
-    CMD=("sh" -c "gcc \"$FILE\" -o \"$BASENAME\" && ./\"$BASENAME\"")
+    # CMD=("sh" -c "gcc \"$FILE\" -o \"$BASENAME\" && ./\"$BASENAME\"")
+    CMD=("sh" -c "gcc \"$FILE\" -o \"$BASENAME\" -lncurses && ./\"$BASENAME\"")
     ;;
 cpp)
     CMD=("sh" -c "g++ \"$FILE\" -o \"$BASENAME\" && ./\"$BASENAME\"")

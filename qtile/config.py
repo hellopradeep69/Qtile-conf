@@ -1,17 +1,30 @@
 import os
 
-
 import libqtile.resources
 import subprocess
 
 from libqtile import hook
 from libqtile import bar, layout, qtile, widget
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import (
+    Click,
+    Drag,
+    Group,
+    Key,
+    Match,
+    Screen,
+    KeyChord,
+    ScratchPad,
+    DropDown,
+)
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
+from hooks import *
+from widgets import screens, widget_defaults, extension_defaults
+
 mod = "mod4"
 alt = "mod1"  # Alt
+home = os.path.expanduser("~")
 terminal = guess_terminal()
 
 keys = [
@@ -71,7 +84,7 @@ keys = [
     ),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod], "d", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     # My Keybinds | hello pradeep
     Key(
         [alt],
@@ -134,18 +147,49 @@ keys = [
         lazy.window.toggle_fullscreen(),
         desc="Toggle fullscreen",
     ),
-    Key(
-        [],
-        "Menu",
-        lazy.spawn("/home/hellopradeep/.local/bin/rofi-clipboard"),
-        desc="Rofi clipboard menu",
-    ),
+    # Key(
+    #     [],
+    #     "Menu",
+    #     lazy.spawn("/home/hellopradeep/.local/bin/rofi-clipboard"),
+    #     desc="Rofi clipboard menu",
+    # ),
     Key([], "Print", lazy.spawn("gnome-screenshot"), desc="Full screenshot"),
     Key(
         ["shift"],
         "Print",
         lazy.spawn("gnome-screenshot -a"),
         desc="Screenshot selected area",
+    ),
+    # Modes
+    KeyChord(
+        [mod],
+        "r",
+        [
+            Key(
+                [],
+                "h",
+                lazy.layout.grow_left(),
+                desc="Grow window to the left in resize mode",
+            ),
+            Key(
+                [],
+                "l",
+                lazy.layout.grow_right(),
+                desc="Grow window to the right in resize mode",
+            ),
+            Key(
+                [], "j", lazy.layout.grow_down(), desc="Grow window down in resize mode"
+            ),
+            Key([], "k", lazy.layout.grow_up(), desc="Grow window up in resize mode"),
+            Key(
+                [mod],
+                "space",
+                lazy.group.prev_window(),
+                desc="Toggle btw windows in resize mode",
+            ),
+        ],
+        mode=True,
+        name="Resize",
     ),
 ]
 
@@ -185,9 +229,30 @@ groups = [
     ),
 ]
 
+groups.append(
+    ScratchPad(
+        "a",
+        [
+            # define a drop down terminal.
+            # it is placed in the upper third of screen by default.
+            DropDown(
+                "term",
+                terminal,
+                width=0.7,
+                height=0.7,
+                x=0.15,
+                y=0.15,
+                opacity=0.9,
+                on_focus_lost_hide=True,
+            ),
+        ],
+    ),
+)
+
 for i in groups:
     keys.extend(
         [
+            Key([mod], "s", lazy.group["a"].dropdown_toggle("term")),
             # mod + group number = switch to group
             Key(
                 [mod],
@@ -229,7 +294,7 @@ tree_value = {
     "inactive_bg": "#000000",
     "active_fg": "#ffffff",
     "font": "JetBrainsMono Nerd Font Bold",
-    "panel_width": 100,
+    "panel_width": 150,
 }
 
 layouts = [
@@ -249,88 +314,6 @@ layouts = [
     # layout.Stack(num_stacks=2, **layout_value1),  # not best
     # layout.Floating(),  # nope no floating
     # layout.ScreenSplit(),  # jsut split in half
-]
-
-widget_defaults = dict(
-    # font="Iosevka Nerd Font",
-    font="Terminess Nerd Font Mono",
-    # font="JetBrainsMono Nerd Font",
-    fontsize=15,
-    padding=7,
-)
-extension_defaults = widget_defaults.copy()
-
-logo = os.path.join(os.path.dirname(libqtile.resources.__file__), "logo.png")
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.CurrentLayout(),
-                widget.GroupBox(
-                    disable_drag=True,
-                    highlight_method="line",
-                    highlight_color=["#373B41", "#282828"],
-                    this_current_screen_border="#d9d0c0",
-                ),
-                widget.Prompt(),
-                widget.WindowName(
-                    format="{name}",
-                    max_chars=40,
-                    empty_group_string=" hellopradeep",
-                ),
-                widget.Memory(format="{MemUsed: .0f}{mm}"),
-                widget.PulseVolume(
-                    fmt="| Vol: {}",
-                ),
-                widget.Battery(
-                    charging_foreground="#B2B2B2",
-                    low_foreground="#E50000",
-                    low_percentage=0.35,
-                    charge_char="CHA",
-                    discharge_char="BAT",
-                    format="| {char} {percent:2.0%}",
-                    charge_controller=lambda: (0, 80),
-                    update_interval=15,
-                ),
-                widget.Wlan(
-                    format="| {essid}",
-                    interface="wlp2s0",
-                    disconnected_message="| Disconnected",
-                ),
-                widget.Clock(format="| %m-%d %a | %I:%M %p"),
-                widget.Backlight(
-                    backlight_name="amdgpu_bl1",
-                    step=5,
-                    format="| {percent:2.0%}   ",
-                ),
-            ],
-            30,
-            opacity=0.9,
-            background="#282A2E",
-            # background="#393939",
-            # margin=[5, 5, 0, 5],
-            margin=[3, 3, 0, 3],
-            name="hello_bar",
-        ),
-        # left=bar.Bar(
-        #     [
-        #         widget.Spacer(background="#393939"),
-        #         widget.VerticalClock(fontsize=20),
-        #         widget.Spacer(background="#393939"),
-        #     ],
-        #     30,  # width
-        #     opacity=0.5,
-        #     background="#393939",
-        #     margin=[3, 3, 3, 3],
-        # ),
-        background="#000000",
-        wallpaper="~/Pictures/Wallpapers/tree.png",
-        wallpaper_mode="stretch",
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        x11_drag_polling_rate=60,
-    ),
 ]
 
 # Drag floating layouts.
@@ -368,6 +351,7 @@ floating_layout = layout.Floating(
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
         Match(wm_class="Gnome-screenshot"),
+        Match(wm_class="copyq"),
         Match(title="Select Area"),
     ],
 )
@@ -398,23 +382,23 @@ wl_xcursor_size = 24
 wmname = "LG3D"
 
 
-# Hook | Autostart
-@hook.subscribe.startup_once
-def autostart():
-    script = os.path.expanduser("~/.config/qtile/autostart.sh")
-    subprocess.run([script])
-
-
-# Rule opener for app
-@hook.subscribe.client_new
-def move_to_group(window):
-    wm_class = window.window.get_wm_class()
-    if wm_class and "Telegram" in wm_class:
-        window.togroup("0")
-        # window.qtile.groups_map["0"].cmd_toscreen()
-    elif wm_class and "vlc" in wm_class:
-        window.togroup("4")
-        # window.qtile.groups_map["4"].cmd_toscreen()
-    elif wm_class and "nemo" in wm_class:
-        window.togroup("4")
-        # window.qtile.groups_map["4"].cmd_toscreen()
+# # Hook | Autostart
+# @hook.subscribe.startup_once
+# def autostart():
+#     script = os.path.expanduser("~/.config/qtile/autostart.sh")
+#     subprocess.run([script])
+#
+#
+# # Rule opener for app
+# @hook.subscribe.client_new
+# def move_to_group(window):
+#     wm_class = window.window.get_wm_class()
+#     if wm_class and "Telegram" in wm_class:
+#         window.togroup("0")
+#         # window.qtile.groups_map["0"].cmd_toscreen()
+#     elif wm_class and "vlc" in wm_class:
+#         window.togroup("4")
+#         # window.qtile.groups_map["4"].cmd_toscreen()
+#     elif wm_class and "nemo" in wm_class:
+#         window.togroup("4")
+#         # window.qtile.groups_map["4"].cmd_toscreen()

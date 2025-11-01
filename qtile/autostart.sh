@@ -23,4 +23,4 @@ picom &
 
 # Open the apps
 # zen &
-wezterm start --always-new-process &
+# wezterm start --always-new-process &
