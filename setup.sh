@@ -302,3 +302,6 @@ rm -f JetBrainsMono.zip Terminus.zip zen.linux-x86_64.tar.xz
 # 7️⃣ Done
 # -------------------------
 echo "Setup complete! You can now restart Qtile or your system."
+echo ""
+echo -e "${GREEN}✅ Setup complete!${RESET}"
+echo -e "${CYAN}Restart Qtile or reboot to apply all changes.${RESET}"
