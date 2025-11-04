@@ -17,8 +17,10 @@ return {
 
 	-- Font settings
 	font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Regular" }),
+	-- font = wezterm.font("3270 Nerd Font Mono"),
 	-- font = wezterm.font("Terminess Nerd Font Mono"),
 	font_size = 12.0,
+	-- font_size = 15.0,
 
 	-- Tab bar behavior and appearance
 	enable_tab_bar = true,

@@ -20,3 +20,5 @@ def move_to_group(window):
         window.togroup("4")
     elif wm_class and "nemo" in wm_class:
         window.togroup("4")
+    elif wm_class and "cinnamon-settings network" in wm_class:
+        window.togroup("0", switch_group=True)

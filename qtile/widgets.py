@@ -3,13 +3,15 @@ import os
 from libqtile import bar, widget
 from libqtile.config import Screen
 import libqtile.resources
+from libqtile.lazy import lazy
 
 logo = os.path.join(os.path.dirname(libqtile.resources.__file__), "logo.png")
 
 widget_defaults = dict(
     font="Terminess Nerd Font Mono",
+    # font="3270 Nerd Font SemCond",
     fontsize=15,
-    padding=7,
+    padding=5,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -46,8 +48,11 @@ def init_widgets_list():
             format="| {essid}",
             interface="wlp2s0",
             disconnected_message="| Disconnected",
+            mouse_callbacks={
+                "Button1": lazy.spawn("cinnamon-settings network"),
+            },
         ),
-        widget.Clock(format="| %m-%d %a | %I:%M %p"),
+        widget.Clock(format="| %d-%m %a | %I:%M %p"),
         widget.Backlight(
             backlight_name="amdgpu_bl1",
             step=5,
@@ -64,6 +69,7 @@ def init_screens():
                 size=30,
                 opacity=0.9,
                 background="#282A2E",
+                # background="#393939",
                 margin=[3, 3, 0, 3],
             ),
             background="#000000",
@@ -75,4 +81,3 @@ def init_screens():
 
 
 screens = init_screens()
-

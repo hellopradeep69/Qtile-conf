@@ -16,7 +16,6 @@ picom &
 
 # Custom scripts
 ~/.local/bin/keybind.sh &
-~/.local/bin/battery-notify2.sh &
 
 # polybar
 # $HOME/.config/polybar/launch.sh &

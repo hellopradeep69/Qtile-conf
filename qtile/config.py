@@ -1,9 +1,7 @@
 import os
 
 import libqtile.resources
-import subprocess
 
-from libqtile import hook
 from libqtile import bar, layout, qtile, widget
 from libqtile.config import (
     Click,
@@ -11,7 +9,6 @@ from libqtile.config import (
     Group,
     Key,
     Match,
-    Screen,
     KeyChord,
     ScratchPad,
     DropDown,
@@ -89,7 +86,7 @@ keys = [
     Key(
         [alt],
         "space",
-        lazy.spawn("/home/hellopradeep/.local/bin/internetq.sh"),
+        lazy.spawn("/home/hellopradeep/.local/bin/internet.sh"),
         desc="Internet qtile",
     ),
     Key([mod], "p", lazy.hide_show_bar("top"), desc="Toggle top bar"),
@@ -147,12 +144,12 @@ keys = [
         lazy.window.toggle_fullscreen(),
         desc="Toggle fullscreen",
     ),
-    # Key(
-    #     [],
-    #     "Menu",
-    #     lazy.spawn("/home/hellopradeep/.local/bin/rofi-clipboard"),
-    #     desc="Rofi clipboard menu",
-    # ),
+    Key(
+        [],
+        "Menu",
+        lazy.spawn("/home/hellopradeep/.local/bin/rofi-clipboard"),
+        desc="Rofi clipboard menu",
+    ),
     Key([], "Print", lazy.spawn("gnome-screenshot"), desc="Full screenshot"),
     Key(
         ["shift"],
@@ -161,6 +158,7 @@ keys = [
         desc="Screenshot selected area",
     ),
     # Modes
+    # Mode 1 | resize
     KeyChord(
         [mod],
         "r",
@@ -252,7 +250,8 @@ groups.append(
 for i in groups:
     keys.extend(
         [
-            Key([mod], "s", lazy.group["a"].dropdown_toggle("term")),
+            # scratchpad
+            Key([mod], "slash", lazy.group["a"].dropdown_toggle("term")),
             # mod + group number = switch to group
             Key(
                 [mod],
@@ -294,7 +293,7 @@ tree_value = {
     "inactive_bg": "#000000",
     "active_fg": "#ffffff",
     "font": "JetBrainsMono Nerd Font Bold",
-    "panel_width": 150,
+    "panel_width": 125,
 }
 
 layouts = [
@@ -304,12 +303,12 @@ layouts = [
     layout.TreeTab(**tree_value),
     # Try more layouts by unleashing below layouts.
     # layout.Columns(**layout_value),
-    # layout.Zoomy(**layout_value1), # tree but with lil preview
+    # layout.Zoomy(**layout_value1),  # tree but with lil preview
     # layout.Tile(**layout_value1),  # it push focus to side
     # layout.MonadTall(**layout_value1),  # arrange in same format even tho focus on win
     # layout.MonadWide(**layout_value1),  # same as tall but wide
     # layout.Matrix(**layout_value1),  # good for show off
-    # layout.VerticalTile(**layout_value1), # absolute stupid
+    # layout.VerticalTile(**layout_value1),  # absolute stupid
     # layout.Max(),  # no
     # layout.Stack(num_stacks=2, **layout_value1),  # not best
     # layout.Floating(),  # nope no floating
@@ -380,25 +379,3 @@ wl_xcursor_size = 24
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
-
-
-# # Hook | Autostart
-# @hook.subscribe.startup_once
-# def autostart():
-#     script = os.path.expanduser("~/.config/qtile/autostart.sh")
-#     subprocess.run([script])
-#
-#
-# # Rule opener for app
-# @hook.subscribe.client_new
-# def move_to_group(window):
-#     wm_class = window.window.get_wm_class()
-#     if wm_class and "Telegram" in wm_class:
-#         window.togroup("0")
-#         # window.qtile.groups_map["0"].cmd_toscreen()
-#     elif wm_class and "vlc" in wm_class:
-#         window.togroup("4")
-#         # window.qtile.groups_map["4"].cmd_toscreen()
-#     elif wm_class and "nemo" in wm_class:
-#         window.togroup("4")
-#         # window.qtile.groups_map["4"].cmd_toscreen()
