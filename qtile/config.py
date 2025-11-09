@@ -108,6 +108,7 @@ keys = [
         desc="Toggle floating",
     ),
     Key([mod, "shift"], "r", lazy.reload_config(), desc="Reload the config"),
+    Key([mod, "shift"], "q", lazy.restart(), desc="Restart qtile"),
     Key(
         [],
         "XF86MonBrightnessUp",
@@ -206,7 +207,7 @@ for vt in range(1, 8):
 
 # groups = [Group(i) for i in "1234567890"]
 
-# My Groups
+# My Groups | assign
 groups = [
     Group("1"),
     Group("2", matches=[Match(wm_class="zen")]),
@@ -282,8 +283,8 @@ layout_value = {
 }
 
 layout_value1 = {
-    "border_focus": "#d9d0c0",  # Focused window border color
-    "border_normal": "#010000",  # Unfocused window border color
+    "border_focus": "#979186",  # Focused window border color
+    "border_normal": "#333333",  # Unfocused window border color
     "border_on_single": True,  # Show border even for single window
     "border_width": 1,  # Border thickness
 }
@@ -294,6 +295,7 @@ tree_value = {
     "active_fg": "#ffffff",
     "font": "JetBrainsMono Nerd Font Bold",
     "panel_width": 125,
+    "place_right": True,
 }
 
 layouts = [

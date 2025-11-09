@@ -26,13 +26,12 @@ def init_widgets_list():
             this_current_screen_border="#d9d0c0",
         ),
         widget.Prompt(),
-        widget.WindowName(
-            format="{name}",
-            max_chars=40,
-            empty_group_string=" hellopradeep",
-        ),
+        # -
+        widget.Spacer(),
+        # -
         widget.Chord(),
-        widget.Memory(format="{MemUsed: .0f}{mm}"),
+        widget.CPU(format="CPU {freq_current}GHz {load_percent}%"),
+        widget.Memory(format="| {MemUsed: .0f}{mm}"),
         widget.PulseVolume(fmt="| Vol: {}"),
         widget.Battery(
             charging_foreground="#B2B2B2",
@@ -66,7 +65,7 @@ def init_screens():
         Screen(
             top=bar.Bar(
                 widgets=init_widgets_list(),
-                size=30,
+                size=24,
                 opacity=0.9,
                 background="#282A2E",
                 # background="#393939",
